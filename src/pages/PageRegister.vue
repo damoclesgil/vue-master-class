@@ -73,6 +73,7 @@
       </form>
       <div class="text-center push-top">
         <button @click="registerWithGoogle" class="btn-red btn-xsmall"><i class="fa fa-google fa-btn"></i>Sign up with Google</button>
+        <button @click="registerWithFacebook" class="btn-blue btn-xsmall"><i class="fa fa-facebook fa-btn"></i>Sign up with Facebook</button>
       </div>
     </div>
   </div>
@@ -133,6 +134,10 @@
 
         registerWithGoogle () {
           this.$store.dispatch('auth/signInWithGoogle')
+            .then(() => this.successRedirect())
+        },
+        registerWithFacebook () {
+          this.$store.dispatch('auth/signInWithFacebook')
             .then(() => this.successRedirect())
         },
 

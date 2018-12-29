@@ -60,6 +60,20 @@ export default {
         })
     },
 
+    signInWithFacebook ({dispatch}) {
+      const provider = new firebase.auth.FacebookAuthProvider()
+      return firebase.auth().signInWithPopup(provider)
+        .then(data => {
+          const user = data.user
+          firebase.database().ref('users').child(user.uid).once('value', snapshot => {
+            if (!snapshot.exists()) {
+              return dispatch('users/createUser', {id: user.uid, name: user.displayName, email: user.email, username: user.email, avatar: user.photoURL}, {root: true})
+                .then(() => dispatch('fetchAuthUser'))
+            }
+          })
+        })
+    },
+
     signOut ({commit}) {
       return firebase.auth().signOut()
         .then(() => {
